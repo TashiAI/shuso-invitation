@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shuso Ceremony Invitation - San Francisco Zen Center</title>
+
+  <!-- Typography: Cormorant Garamond & Cinzel -->
+  <link rel="preconnect" href="[suspicious link removed]">
+  <link rel="preconnect" href="[suspicious link removed]" crossorigin>
+  <link href="[suspicious link removed]" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #f2ece1;
+      background-image: radial-gradient(#dfd6c8 1px, transparent 1px);
+      background-size: 24px 24px;
+      font-family: 'Cormorant Garamond', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      color: #2b2520;
+    }
+
+    .header-branding {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header-branding h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #786652;
+      font-weight: 600;
+    }
+
+    .header-branding p {
+      font-size: 18px;
+      font-style: italic;
+      color: #8c7b69;
+      margin-top: 6px;
+    }
+
+    /* Envelope Container */
+    .envelope-container {
+      position: relative;
+      width: 100%;
+      max-width: 660px;
+      height: 440px;
+      margin-top: 80px;
+      perspective: 1400px;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #e3dad0;
+      border-radius: 8px;
+      box-shadow: 0 25px 55px rgba(44, 37, 30, 0.22), 0 6px 15px rgba(0,0,0,0.06);
+      cursor: pointer;
+    }
+
+    /* Patterned Inner Liner */
+    .liner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #3d342c;
+      background-image: radial-gradient(#cba363 0.85px, transparent 0.85px), radial-gradient(#cba363 0.85px, #3d342c 0.85px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+      border-radius: 8px;
+      z-index: 1;
+    }
+
+    /* Proportional Flap Folds */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 330px solid transparent;
+      border-right: 330px solid transparent;
+      border-top: 240px solid #d8cdbe;
+      transform-origin: top;
+      transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 5;
+      filter: drop-shadow(0 5px 8px rgba(0,0,0,0.14));
+    }
+
+    .pocket-left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 330px solid #dfd4c4;
+      border-top: 220px solid transparent;
+      border-bottom: 220px solid #dfd4c4;
+      z-index: 4;
+      border-bottom-left-radius: 8px;
+    }
+
+    .pocket-right {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-right: 330px solid #d5c9b8;
+      border-top: 220px solid transparent;
+      border-bottom: 220px solid #d5c9b8;
+      z-index: 4;
+      border-bottom-right-radius: 8px;
+    }
+
+    .pocket-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 330px solid transparent;
+      border-right: 330px solid transparent;
+      border-bottom: 210px solid #cbbfad;
+      z-index: 4;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    /* Red Wax Seal with SFZC Ensō SVG */
+    .wax-seal {
+      position: absolute;
+      top: 195px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 78px;
+      height: 78px;
+      background: radial-gradient(circle at 35% 35%, #aa3838 0%, #701c1c 80%, #4a1010 100%);
+      border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.38), inset 0 2px 4px rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+      border: 2px solid #8f2626;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .wax-seal::after {
+      content: '';
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      border: 1px dashed rgba(252, 232, 205, 0.35);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .wax-seal svg {
+      width: 46px;
+      height: 46px;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+    }
+
+    /* Stationery Card (100% Hidden until envelope is opened) */
+    .card {
+      position: absolute;
+      bottom: 15px;
+      left: 3%;
+      width: 94%;
+      background: #faf7f2;
+      border-radius: 6px;
+      padding: 38px 32px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.09);
+      border: 1px solid #e3dacd;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px) scale(0.96);
+      pointer-events: none;
+      transition: transform 0.95s cubic-bezier(0.34, 1.35, 0.64, 1), opacity 0.4s ease 0.1s, z-index 0.1s;
+      z-index: 2;
+    }
+
+    .card-inner-border {
+      border: 1px solid #d4af37;
+      padding: 28px 22px;
+      background: #ffffff;
+      outline: 5px solid #faf7f2;
+    }
+
+    /* Linoprint Artwork Frame */
+    .linoprint-frame {
+      width: 180px;
+      height: 230px;
+      margin: 0 auto 22px auto;
+      border: 1px solid #c8bcad;
+      padding: 8px;
+      background: #fdfbf7;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .linoprint-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #9c8262;
+      margin-bottom: 8px;
+    }
+
+    .card h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 28px;
+      color: #2b231b;
+      margin-bottom: 6px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .card .shuso-name {
+      font-size: 24px;
+      font-style: italic;
+      color: #701c1c;
+      margin-bottom: 18px;
+    }
+
+    .card p.invite-text {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #4a4035;
+      margin-bottom: 24px;
+    }
+
+    .date-badge {
+      background: #f4ede2;
+      border-top: 1px solid #e0d5c5;
+      border-bottom: 1px solid #e0d5c5;
+      padding: 12px;
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      letter-spacing: 2px;
+      color: #2c241c;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-rsvp {
+      background: #701c1c;
+      background: linear-gradient(135deg, #8a2424 0%, #611818 100%);
+      color: #ffffff;
+      font-family: 'Cinzel', serif;
+      padding: 13px 30px;
+      border-radius: 2px;
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 14px rgba(112, 28, 28, 0.28);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-rsvp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(112, 28, 28, 0.38);
+    }
+
+    .btn-calendar {
+      background: transparent;
+      color: #635242;
+      border: 1px solid #a8947d;
+      font-family: 'Cinzel', serif;
+      padding: 12px 22px;
+      border-radius: 2px;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Active Opened State */
+    .envelope.active .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope.active .wax-seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4);
+      pointer-events: none;
+    }
+
+    .envelope.active .card {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-460px) scale(1);
+      z-index: 7;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+    }
+
+    .hint-text {
+      margin-top: 45px;
+      font-size: 16px;
+      color: #736555;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-branding">
+    <h2>San Francisco Zen Center</h2>
+    <p>Fall 2026 Practice Period</p>
+  </div>
+
+  <div class="envelope-container">
+    <div class="envelope" id="envelope" onclick="toggleEnvelope()">
+      <div class="liner"></div>
+      <div class="flap"></div>
+
+      <!-- Red Wax Seal with SFZC Open Ensō Circle Vector -->
+      <div class="wax-seal">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="[suspicious link removed]">
+          <path d="M 62,20 
+                   C 36,12 14,32 15,56 
+                   C 16,80 36,90 60,86 
+                   C 82,82 90,62 86,42 
+                   C 83,28 72,19 62,20" 
+                stroke="#fce8cd" 
+                stroke-width="8" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Stationery Card (Hidden until opened) -->
+      <div class="card" id="card">
+        <div class="card-inner-border">
+          
+          <!-- Linoprint Artwork Placeholder -->
+          <div class="linoprint-frame">
+            <img src="mei_linoprint_placeholder.png" alt="Buddha Linoprint Artwork by Mei">
+          </div>
+
+          <h4>San Francisco Zen Center</h4>
+          <h1>Shuso Ceremony</h1>
+          <div class="shuso-name">Celebrating Mei Elliott</div>
+
+          <p class="invite-text">
+            Please join the Sangha as we honor the completion of the Fall Practice Period with the traditional Shuso Ceremony & Dharma Inquiry.
+          </p>
+
+          <div class="date-badge">
+            Saturday, December 5, 2026<br>
+            <span style="font-size: 12px; font-weight: normal; color: #6b5c4d;">City Center • 300 Page Street, San Francisco</span>
+          </div>
+
+          <div class="action-group">
+            <a href="#" class="btn-rsvp" onclick="alert('RSVP confirmation sent! Tim will update the seating chart.'); event.stopPropagation();">RSVP Now</a>
+            <a href="#" class="btn-calendar" onclick="alert('Added to Google Calendar!'); event.stopPropagation();">Add to Calendar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pocket-left"></div>
+      <div class="pocket-right"></div>
+      <div class="pocket-bottom"></div>
+    </div>
+  </div>
+
+  <p class="hint-text" id="hint">Click the wax seal to open the invitation</p>
+
+  <script>
+    function toggleEnvelope() {
+      const envelope = document.getElementById('envelope');
+      const hint = document.getElementById('hint');
+      envelope.classList.toggle('active');
+      if (envelope.classList.contains('active')) {
+        hint.textContent = 'Click the invitation to fold it back into the envelope';
+      } else {
+        hint.textContent = 'Click the wax seal to open the invitation';
+      }
+    }
+  </script>
+</body>
+</html>
